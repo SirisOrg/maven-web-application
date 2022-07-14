@@ -22,17 +22,17 @@ sshagent(['f0d6ff07-903d-4e09-880c-72d021f8fcd7']) {
 }
 */
 }
-    catch (e){
-    currentBuild.result = "FAILURE"
-    throw e
-    }
+catch(e){
+currentBuild.result = "FAILURE"
+throw e
+    } 
     finally{
-    slacknotifications(currentBuild.result)
+    notifyBuild(currentBuild.result)
     }
 }
 def notifyBuild(String buildStatus = 'STARTED') {
   // build status of null means successful
-  buildStatus =  buildStatus ?: 'SUCCESSFUL'
+  buildStatus =  buildStatus ?: 'SUCCESS'
 
   // Default values
   def colorName = 'RED'
