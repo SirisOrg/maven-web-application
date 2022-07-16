@@ -1,0 +1,28 @@
+pipeline{
+
+
+stages{
+	stage('CheckoutCode'){
+	steps{
+	notifyBuild("STARTED")
+	git branch: 'development', credentialsId: '6f1b45e5-b6b3-4188-bc4d-8d481170ef3a', url: 'https://github.com/SirisOrg/maven-web-application.git'
+	}
+	}
+	
+	stage('Build'){
+	steps{
+	sh "mvn clean package"
+	}
+	}
+
+	stage('DeployToTomcatServer'){
+	steps{
+	sshagent(['TomcatId']) {
+    sh "scp -o StrictHostKeyChecking=no target/maven-web-application.war ec2-user@13.126.198.170:/opt/apache-tomcat-9.0.64/webapps/"
+}
+	}
+	}
+	}
+   
+
+}
